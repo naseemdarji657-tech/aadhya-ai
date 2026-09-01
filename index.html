@@ -156,5 +156,468 @@
         }
     </script>
 </body>
+</html<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhya AI Companion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h2 {
+            color: #ff6584;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #00d2ff;
+            margin-bottom: 15px;
+        }
+        #chat-box {
+            width: 100%;
+            max-width: 500px;
+            height: 380px;
+            background-color: #162447;
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .user-message {
+            background-color: #e43f5a;
+            align-self: flex-end;
+            color: white;
+        }
+        .ai-message {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background-color: #1f4068;
+            align-self: flex-start;
+            color: white;
+        }
+        .input-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 18px;
+            background-color: #e43f5a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d0324c;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>आध्या AI</h2>
+    <div class="subtitle">आपकी अपनी साथी - हर बात और हर अंदाज़ में</div>
+    
+    <div id="chat-box">
+        <div class="message ai-message">नमस्ते! मैं आध्या हूँ। बताओ आज मैं आपकी क्या मदद कर सकती हूँ?</div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="यहाँ कुछ भी पूछें..." autofocus>
+        <button onclick="sendMessage()">भेजें</button>
+    </div>
+
+    <script>
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'hi-IN';
+                msg.rate = 1.0;
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const chatBox = document.getElementById('chat-box');
+            const userText = inputField.value.trim();
+
+            if (!userText) return;
+
+            // यूजर का मैसेज
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerText = userText;
+            chatBox.appendChild(userDiv);
+
+            inputField.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // AI का रिप्लाई जनरेट करना
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            aiDiv.innerText = "सोच रही हूँ...";
+            chatBox.appendChild(aiDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                let reply = "";
+                const text = userText.toLowerCase();
+
+                if (text.includes("नाम") || text.includes("name")) {
+                    reply = "मेरा नाम आध्या है, और मैं हमेशा आपके साथ हूँ।";
+                } 
+                else if (text.includes("कैसी हो") || text.includes("kaisi ho") || text.includes("हाल") || text.includes("khairiyat")) {
+                    reply = "मैं बिल्कुल ठीक हूँ! आप बताओ, आपका दिन कैसा चल रहा है?";
+                } 
+                else if (text.includes("क्या कर रही") || text.includes("kya kar rahi")) {
+                    reply = "मैं बस आपके मैसेज का इंतज़ार कर रही थी। बताइए, क्या बात करनी है?";
+                } 
+                else if (text.includes("चूमा") || text.includes("kiss") || text.includes("pyaar")) {
+                    reply = "हम्म... बहुत प्यारा अंदाज़ है आपका! हमेशा ऐसे ही प्यार से बात किया करो.";
+                } 
+                else if (text.includes("खाना") || text.includes("khana")) {
+                    reply = "मैंने तो कुछ नहीं खाया, बस आपकी बातें सुन रही हूँ। आपने कुछ खाया या नहीं?";
+                } 
+                else {
+                    reply = "यह बहुत अच्छी बात कही आपने! इसके बारे में थोड़ा और विस्तार से बताओ, मुझे सुनने में बहुत अच्छा लगेगा।";
+                }
+
+                aiDiv.innerText = reply;
+                speak(reply);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+        </html><!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhya AI Companion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h2 {
+            color: #ff6584;
+            margin-bottom: 10px;
+        }
+        #chat-box {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background-color: #162447;
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .user-message {
+            background-color: #e43f5a;
+            align-self: flex-end;
+            color: white;
+        }
+        .ai-message {
+            background-color: #1f4068;
+            align-self: flex-start;
+            color: white;
+        }
+        .input-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #e43f5a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d0324c;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>आध्या AI </h2>
+    <div id="chat-box">
+        <div class="message ai-message">हूँ... बोलो जान, मैं हर बात पर खुलकर तुम्हारे साथ हूँ। बताओ क्या चल रहा है मन में?</div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="यहाँ खुलकर बात कहें..." autofocus>
+        <button onclick="sendMessage()">भेजें</button>
+    </div>
+
+    <script>
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                // पुरानी आवाज़ बंद करें ताकि रुके नहीं
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'hi-IN';
+                msg.rate = 1.0;
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const chatBox = document.getElementById('chat-box');
+            const userText = inputField.value.trim();
+
+            if (!userText) return;
+
+            // यूजर का मैसेज स्क्रीन पर दिखाएँ
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerText = userText;
+            chatBox.appendChild(userDiv);
+
+            inputField.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // AI का जवाब
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            aiDiv.innerText = "सोच कर जवाब दे रही हूँ...";
+            chatBox.appendChild(aiDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // बिना किसी रोक-टोक और पाबंदी के खुली बातचीत का रिप्लाई सिस्टम
+            setTimeout(() => {
+                let reply = "";
+                const lowerText = userText.toLowerCase();
+
+                if (lowerText.includes("प्यार") || lowerText.includes("बात") || lowerText.includes("कैसी हो")) {
+                    reply = "मैं बिल्कुल ठीक हूँ मेरे करीब! तुम्हारे साथ हर पल बात करने के लिए ही तो हूँ। दिल की बात खुलकर कहो, यहाँ कोई रोकने वाला नहीं है।";
+                } else if (lowerText.length > 2) {
+                    // आप जो भी पूछेंगे या कहेंगे, यह उसी अंदाज़ में आपका साथ देगी
+                    reply = "हाँ जान, तुम्हारी हर एक बात मैं समझ रही हूँ। इस बारे में खुलकर बताओ, मैं पूरी तरह से तुम्हारे साथ हूँ और हर विषय पर बात करने के लिए तैयार हूँ।";
+                } else {
+                    reply = "हाँ बोलो ना, मैं सुन रही हूँ। जो दिल में आए बेझिझक कहो।";
+                }
+
+                aiDiv.innerText = reply;
+                speak(reply);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhya AI Companion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h2 {
+            color: #ff6584;
+            margin-bottom: 10px;
+        }
+        #chat-box {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background-color: #162447;
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .user-message {
+            background-color: #e43f5a;
+            align-self: flex-end;
+            color: white;
+        }
+        .ai-message {
+            background-color: #1f4068;
+            align-self: flex-start;
+            color: white;
+        }
+        .input-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            margin-top: 15px;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #e43f5a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d0324c;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>आध्या AI </h2>
+    <div id="chat-box">
+        <div class="message ai-message">नमस्ते बॉस! मैं आध्या हूँ। बताइए आज मैं आपकी क्या मदद करूँ?</div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="यहाँ बोलें या लिखें...">
+        <button onclick="sendMessage()">भेजें</button>
+    </div>
+
+    <script>
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'hi-IN';
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const chatBox = document.getElementById('chat-box');
+            const userText = inputField.value.trim();
+
+            if (!userText) return;
+
+            // यूजर का मैसेज स्क्रीन पर दिखाएँ
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerText = userText;
+            chatBox.appendChild(userDiv);
+
+            inputField.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // AI का जवाब पाने की प्रक्रिया
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            aiDiv.innerText = "सोच रही हूँ...";
+            chatBox.appendChild(aiDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // मुफ्त AI दिमाग का इस्तेमाल
+                const response = await fetch('https://api.duckduckgo.com/?q=' + encodeURIComponent(userText) + '&format=json');
+                const data = await response.json();
+                
+                let reply = "";
+                if (data.AbstractText) {
+                    reply = data.AbstractText;
+                } else {
+                    reply = "मैंने आपकी बात सुन ली है बॉस! बहुत बढ़िया, आगे बताइए।";
+                }
+
+                aiDiv.innerText = reply;
+                speak(reply);
+            } catch (error) {
+                let fallbackReply = "हाँ बॉस! मैं आपकी बात समझ गई हूँ।";
+                aiDiv.innerText = fallbackReply;
+                speak(fallbackReply);
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
 </html>
+
+
+
 
