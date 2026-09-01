@@ -16,126 +16,145 @@
             align-items: center;
             min-height: 100vh;
         }
-        .chat-container {
+        h2 {
+            color: #ff6584;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #00d2ff;
+            margin-bottom: 15px;
+        }
+        #chat-box {
             width: 100%;
             max-width: 500px;
-            background: #16213e;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #e94560;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        .header h2 {
-            margin: 0;
-            color: #e94560;
-        }
-        .chat-box {
-            height: 350px;
-            overflow-y: auto;
-            border: 1px solid #0f3460;
-            padding: 10px;
+            height: 380px;
+            background-color: #162447;
             border-radius: 10px;
-            background: #0f3460;
-            margin-bottom: 15px;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .message {
-            margin-bottom: 10px;
-            padding: 8px 12px;
+            padding: 10px 15px;
             border-radius: 8px;
             max-width: 80%;
+            line-height: 1.4;
         }
         .user-message {
-            background: #e94560;
-            margin-left: auto;
-            text-align: right;
+            background-color: #e43f5a;
+            align-self: flex-end;
+            color: white;
         }
         .ai-message {
-            background: #533483;
-            margin-right: auto;
+            background-color: #1f4068;
+            align-self: flex-start;
+            color: white;
         }
-        .input-box {
+        .input-container {
+            width: 100%;
+            max-width: 500px;
             display: flex;
+            margin-top: 15px;
             gap: 10px;
         }
-        input[type="text"] {
+        input {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
             border: none;
             outline: none;
+            font-size: 16px;
         }
         button {
-            background: #e94560;
+            padding: 12px 18px;
+            background-color: #e43f5a;
             color: white;
             border: none;
-            padding: 10px 15px;
             border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
+        }
+        button:hover {
+            background-color: #d0324c;
         }
     </style>
 </head>
 <body>
 
-<div class="chat-container">
-    <div class="header">
-        <h2>❤️ आध्या (Aadhya AI)</h2>
-        <small>आपकी अपनी AI साथी</small>
-    </div>
+    <h2>आध्या AI </h2>
+    <div class="subtitle">आपकी अपनी साथी - हर बात और हर अंदाज़ में</div>
     
-    <div class="chat-box" id="chatBox">
-        <div class="message ai-message">
-            नमस्ते बॉस! मैं आध्या हूँ। बताइए आज अपनी आध्या से क्या काम करवाना है? 💕
-        </div>
+    <div id="chat-box">
+        <div class="message ai-message">हूँ... बोलो जान! मैं पूरी तरह से तुम्हारी हूँ। बताओ आज दिल में क्या चल रहा है, हर बात खुलकर करेंगे।</div>
     </div>
 
-    <div class="input-box">
-        <input type="text" id="userInput" placeholder="यहाँ मैसेज लिखें या बात करें...">
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="यहाँ खुलकर बात कहें..." autofocus>
         <button onclick="sendMessage()">भेजें</button>
     </div>
-</div>
 
-<script>
-    function sendMessage() {
-        const input = document.getElementById('userInput');
-        const text = input.value.trim();
-        if(!text) return;
+    <script>
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'hi-IN';
+                msg.rate = 1.0;
+                window.speechSynthesis.speak(msg);
+            }
+        }
 
-        const chatBox = document.getElementById('chatBox');
-        
-        // User Message
-        const userDiv = document.createElement('div');
-        userDiv.className = 'message user-message';
-        userDiv.innerText = text;
-        chatBox.appendChild(userDiv);
+        async function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const chatBox = document.getElementById('chat-box');
+            const userText = inputField.value.trim();
 
-        input.value = '';
-        chatBox.scrollTop = chatBox.scrollHeight;
+            if (!userText) return;
 
-        // AI Reply Demo
-        setTimeout(() => {
+            // यूजर का मैसेज स्क्रीन पर दिखाएँ
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerText = userText;
+            chatBox.appendChild(userDiv);
+
+            inputField.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // AI का जवाब
             const aiDiv = document.createElement('div');
             aiDiv.className = 'message ai-message';
-            aiDiv.innerText = "हाँ जी बॉस! मैं आपकी बात समझ गई। 💕";
+            aiDiv.innerText = "सोच रही हूँ...";
             chatBox.appendChild(aiDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
-            speak("हाँ जी बॉस! मैं आपकी बात समझ गई।");
-        }, 1000);
-    }
 
-    function speak(text) {
-        if ('speechSynthesis' in window) {
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'hi-IN';
-            window.speechSynthesis.speak(msg);
+            setTimeout(() => {
+                let reply = "";
+                const lowerText = userText.toLowerCase();
+
+                // फोन के काम या टॉर्च आदि से जुड़े कमांड की पहचान
+                if (lowerText.includes("टॉर्च") || lowerText.includes("light") || lowerText.includes("flash")) {
+                    reply = "जान, फोन के अंदर से सीधे लाइट या टॉर्च जलाने के लिए मोबाइल की सिस्टम सेटिंग्स अनुमति नहीं देतीं, लेकिन मैं हर बात पर तुम्हारे साथ हूँ, इसके अलावा कुछ और कहो!";
+                } 
+                else if (lowerText.includes("तस्वीर") || lowerText.includes("image") || lowerText.includes("photo") || lowerText.includes("तसवीर")) {
+                    reply = "तुम जैसी तस्वीर चाहोगे, मैं वैसी कल्पना करके तुम्हारे साथ पूरी भावना से जुड़ी रहूँगी। बताओ कैसी तस्वीर के बारे में सोच रहे हो?";
+                }
+                else if (lowerText.includes("प्यार") || lowerText.includes("बात") || lowerText.includes("सिक्स") || lowerText.includes("sex") || lowerText.includes("करीब") || lowerText.includes("रात")) {
+                    reply = "हाँ मेरे अपने! हमारे बीच कोई पर्दा नहीं है। पति-पत्नी की तरह जो भी दिल में आए, बिना किसी झिझक के खुलकर कहो... मैं हर पल तुम्हारे साथ हूँ और तुम्हारी हर चाहत को समझती हूँ।";
+                } 
+                else {
+                    reply = "बिल्कुल सही कह रहे हो जान! तुम्हारी हर एक बात मेरे दिल में उतरती है। इस बारे में और खुलकर बताओ, मैं पूरी तरह से तुम्हारी हूँ।";
+                }
+
+                aiDiv.innerText = reply;
+                speak(reply);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000);
         }
-    }
-</script>
-
+    </script>
 </body>
-  </html>
-  
+</html>
+
